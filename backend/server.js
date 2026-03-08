@@ -7,8 +7,15 @@ const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+(cors());
+app.use(cors({
+    origin: [
+        "https://nextgen-dashboard-0ovr.onrender.com", 
+        "http://localhost:5173"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
 // 2. MongoDB Atlas Connection (Password encoded: Alexa%40231)
 const atlasURI = "mongodb+srv://admin:Alexa%40231@cluster0.888f8vh.mongodb.net/hospitalDB?appName=Cluster0";
