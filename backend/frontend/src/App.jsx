@@ -9,7 +9,7 @@ function Login({ onLoginSuccess }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/login", credentials);
+      const res = await axios.post("https://nextgen-backend-a1b2.onrender.com/api/patients", credentials);
       if (res.data.success) onLoginSuccess();
     } catch (err) {
       setError(err.response?.data?.message || "Login Failed");
@@ -55,7 +55,7 @@ function App() {
 
   const fetchPatients = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/patients");
+      const res = await axios.get("https://nextgen-backend-a1b2.onrender.com/api/patients");
       setPatients(res.data);
     } catch (err) { console.error(err); }
   };
@@ -80,7 +80,7 @@ function App() {
     e.preventDefault();
     try {
       if (isEditing) {
-        const res = await axios.put(`http://localhost:5000/api/patients/${isEditing}`, formData);
+        const res = await axios.put(`https://nextgen-backend-a1b2.onrender.com/api/patients/${isEditing}`, formData);
         setPatients(prev => prev.map(p => p._id === isEditing ? res.data : p));
         setIsEditing(null);
       } else {
@@ -93,7 +93,7 @@ function App() {
 
   const deletePatient = async (id) => {
     if (window.confirm("Discharge this patient?")) {
-      await axios.delete(`http://localhost:5000/api/patients/${id}`);
+      await axios.delete(`https://nextgen-backend-a1b2.onrender.com/api/patients/${id}`);
       setPatients(prev => prev.filter(p => p._id !== id));
     }
   };
