@@ -84,7 +84,7 @@ function App() {
         setPatients(prev => prev.map(p => p._id === isEditing ? res.data : p));
         setIsEditing(null);
       } else {
-        const res = await axios.post("http://localhost:5000/api/patients", formData);
+        const res = await axios.post("https://nextgen-backend-a1b2.onrender.com/api/patients", formData);
         setPatients(prev => [res.data, ...prev]);
       }
       setFormData({ name: "", age: "", gender: "", disease: "", contact: "", status: "Stable" });
@@ -93,7 +93,7 @@ function App() {
 
   const deletePatient = async (id) => {
     if (window.confirm("Discharge this patient?")) {
-      await axios.delete(`https://nextgen-backend-a1b2.onrender.com/api/patients/${id}`);
+      await axios.delete(`https://nextgen-backend-a1b2.onrender.com/api/patientscd/${id}`);
       setPatients(prev => prev.filter(p => p._id !== id));
     }
   };
