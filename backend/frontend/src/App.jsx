@@ -14,7 +14,7 @@ const handleLogin = async (e) => {
 
     try {
       const response = await axios.post("https://nextgen-backend-zfvh.onrender.com/api/login", { 
-          email: credentials.username, 
+          username: credentials.username, // <--- CHANGED FROM 'email' TO 'username'
           password: credentials.password 
       });
       
