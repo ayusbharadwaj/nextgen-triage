@@ -16,6 +16,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
+app.use(express.json());
 
 // 2. MongoDB Atlas Connection (Password encoded: Alexa%40231)
 const atlasURI = "mongodb+srv://admin:Alexa%40231@cluster0.888f8vh.mongodb.net/hospitalDB?appName=Cluster0";
