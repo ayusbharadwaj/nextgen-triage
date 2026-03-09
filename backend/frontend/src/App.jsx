@@ -6,26 +6,31 @@ function Login({ onLoginSuccess }) {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
 
- const handleLogin = async (e) => {
-    e.preventDefault(); // Prevents the page from refreshing
+const handleLogin = async (e) => {
+    e.preventDefault(); 
+    
+    // 1. PROOF OF LIFE
+    alert("Button clicked! Attempting to talk to the server...");
+
     try {
-      // 1. We send the actual variables from your state
       const response = await axios.post("https://nextgen-backend-zfvh.onrender.com/api/login", { 
-          email: credentials.username, // Assuming your backend expects 'email' but you typed 'username'
+          email: credentials.username, 
           password: credentials.password 
       });
       
+      // 2. SUCCESS ALERT
+      alert("Server replied: Success!");
       console.log("Login Success Data:", response.data);
       
-      // 2. THE MAGIC SWITCH! This tells the app to move to the dashboard.
       if (onLoginSuccess) {
           onLoginSuccess(); 
       }
       
     } catch (error) {
-      console.log(error);
-      // 3. This puts the red error message on the screen if they type the wrong password
-      setError("Invalid credentials. Please try again.");
+      // 3. FAILURE ALERT
+      const serverMessage = error.response?.data?.message || error.message;
+      alert("Server rejected us! Reason: " + serverMessage);
+      setError("Backend says: " + serverMessage);
     }
   };
   return (
