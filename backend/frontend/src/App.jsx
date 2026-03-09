@@ -110,7 +110,7 @@ function App() {
 
   const deletePatient = async (id) => {
     if (window.confirm("Discharge this patient?")) {
-      await axios.delete(`https://nextgen-backend-zfvh.onrender.com/api/patientscd/${id}`);
+      await axios.delete(`https://nextgen-backend-zfvh.onrender.com/api/patients/${id}`);
       
       setPatients(prev => prev.filter(p => p._id !== id));
     }
