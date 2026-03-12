@@ -6,7 +6,7 @@ function Login({ onLoginSuccess }) {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
 
-const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault(); 
     
     // 1. PROOF OF LIFE
@@ -14,7 +14,7 @@ const handleLogin = async (e) => {
 
     try {
       const response = await axios.post("https://nextgen-backend-zfvh.onrender.com/api/login", { 
-          username: credentials.username, // <--- CHANGED FROM 'email' TO 'username'
+          username: credentials.username, 
           password: credentials.password 
       });
       
@@ -33,6 +33,7 @@ const handleLogin = async (e) => {
       setError("Backend says: " + serverMessage);
     }
   };
+
   return (
     <div style={loginPageStyle}>
       <form onSubmit={handleLogin} style={loginFormStyle}>
@@ -111,7 +112,6 @@ function App() {
   const deletePatient = async (id) => {
     if (window.confirm("Discharge this patient?")) {
       await axios.delete(`https://nextgen-backend-zfvh.onrender.com/api/patients/${id}`);
-      
       setPatients(prev => prev.filter(p => p._id !== id));
     }
   };
@@ -166,12 +166,6 @@ function App() {
             </button>
             {isEditing && <button type="button" onClick={() => {setIsEditing(null); setFormData({name:"",age:"",gender:"",disease:"",contact:"",status:"Stable"})}} style={cancelButtonStyle}>Cancel</button>}
           </form>
-          {/* Example of how it might look in your JSX */}
-<div className="patient-card">
-   <h4>ID: {patient.patientId}</h4>
-   <p>Name: {patient.name}</p>
-   <p>Disease: {patient.disease}</p>
-</div>
         </div>
 
         {/* EMERGENCY WARD SECTION */}
@@ -214,6 +208,9 @@ function PatientCard({ p, onEdit, onDelete }) {
   return (
     <div style={{ ...patientCardStyle, borderLeft: `15px solid ${color}` }}>
       <div style={{ flex: 1 }}>
+        {/* THE NEW ID IS ADDED RIGHT HERE! */}
+        {p.patientId && <h4 style={{ margin: "0 0 5px 0", color: "#64748b" }}>ID: {p.patientId}</h4>}
+        
         <h3 style={{ margin: 0, color: "#1e293b" }}>{p.name}</h3>
         <p style={{ margin: "5px 0", color: "#64748b" }}>
           <b>Age:</b> {p.age} | <b>Status:</b> <span style={{color, fontWeight:"bold"}}>{p.status}</span>
