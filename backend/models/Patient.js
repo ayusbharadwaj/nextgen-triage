@@ -1,12 +1,17 @@
 
 
 // 2. Export the Blueprint so server.js can use it
-module.exports = mongoose.model('Patient', patientSchema);
+
+const mongoose = require('mongoose');
+
 const patientSchema = new mongoose.Schema({
-  name: String,
-  age: String,
-  gender: String,
-  disease: String,
-  contact: String,
-  status: { type: String, default: "Stable" } // Add this line!
-});
+  patientId: { type: String, unique: true }, // Add this exact line
+  name: { type: String, required: true },
+  age: { type: Number, required: true },
+  gender: { type: String },
+  disease: { type: String },
+  contact: { type: String },
+  status: { type: String, default: 'Stable' }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Patient', patientSchema);

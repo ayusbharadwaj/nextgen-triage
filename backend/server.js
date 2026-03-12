@@ -67,11 +67,27 @@ app.get('/api/patients', async (req, res) => {
 // C. ADMIT NEW PATIENT
 app.post('/api/patients', async (req, res) => {
   try {
-    const newPatient = new Patient(req.body);
-    const saved = await newPatient.save();
-    res.status(201).json(saved);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    // 1. Generate a random 4-digit number
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    
+    // 2. Create the custom ID (NGT stands for NextGen Triage!)
+    const customId = `NGT-${randomNum}`;
+
+    // 3. Merge the custom ID with the data from your React frontend
+    const patientData = {
+      ...req.body,
+      patientId: customId
+    };
+
+    // 4. Save to MongoDB
+    const newPatient = await Patient.create(patientData);
+    
+    // 5. Send the saved patient (with the new ID) back to React
+    res.status(201).json(newPatient);
+
+  } catch (error) {
+    console.error("Error creating patient:", error);
+    res.status(500).json({ message: "Server Error while adding patient" });
   }
 });
 

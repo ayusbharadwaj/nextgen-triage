@@ -166,6 +166,12 @@ function App() {
             </button>
             {isEditing && <button type="button" onClick={() => {setIsEditing(null); setFormData({name:"",age:"",gender:"",disease:"",contact:"",status:"Stable"})}} style={cancelButtonStyle}>Cancel</button>}
           </form>
+          {/* Example of how it might look in your JSX */}
+<div className="patient-card">
+   <h4>ID: {patient.patientId}</h4>
+   <p>Name: {patient.name}</p>
+   <p>Disease: {patient.disease}</p>
+</div>
         </div>
 
         {/* EMERGENCY WARD SECTION */}
