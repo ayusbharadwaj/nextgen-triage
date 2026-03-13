@@ -7,7 +7,7 @@ const dns = require('dns');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 const app = express();
-(cors());
+
 app.use(cors({
     origin: [
         "https://nextgen-dashboard-0ovr.onrender.com", 
@@ -18,15 +18,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// 2. MongoDB Atlas Connection (Password encoded: Alexa%40231)
+// 2. MongoDB Atlas Connection
 const atlasURI = "mongodb+srv://admin:Alexa%40231@cluster0.888f8vh.mongodb.net/hospitalDB?appName=Cluster0";
 
 mongoose.connect(atlasURI)
   .then(() => console.log("✅ MongoDB Connected Successfully"))
   .catch(err => console.log("❌ MongoDB Connection Error:", err.message));
 
-// 3. Patient Schema
+// 3. Patient Schema (ADDED patientId HERE!)
 const patientSchema = new mongoose.Schema({
+  patientId: { type: String }, 
   name: String,
   age: String,
   gender: String,
@@ -44,7 +45,6 @@ app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
   console.log(`Login attempt: ${username}`);
 
-  // Using the real @ here for the check
   if (username === "admin" && password === "Alexa@231") {
     console.log("✅ Login Success");
     res.json({ success: true });
@@ -64,30 +64,20 @@ app.get('/api/patients', async (req, res) => {
   }
 });
 
-// C. ADMIT NEW PATIENT
+// C. ADMIT NEW PATIENT (Fixed duplicate code block)
 app.post('/api/patients', async (req, res) => {
   try {
-    // 1. Generate a random 4-digit number
     const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const customId = `NGT-${randomNum}`; // Creates NGT-1234
+
+    // Attach it to req.body BEFORE saving
+    const patientData = { ...req.body, patientId: customId }; 
     
-    // 2. Create the custom ID (NGT stands for NextGen Triage!)
-    const customId = `NGT-${randomNum}`;
-
-    // 3. Merge the custom ID with the data from your React frontend
-    const patientData = {
-      ...req.body,
-      patientId: customId
-    };
-
-    // 4. Save to MongoDB
     const newPatient = await Patient.create(patientData);
-    
-    // 5. Send the saved patient (with the new ID) back to React
     res.status(201).json(newPatient);
-
-  } catch (error) {
-    console.error("Error creating patient:", error);
-    res.status(500).json({ message: "Server Error while adding patient" });
+  } catch (err) {
+    console.error("Error creating patient:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
