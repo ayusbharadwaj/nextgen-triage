@@ -19,12 +19,9 @@ app.use(cors({
 app.use(express.json());
 
 // 2. MongoDB Atlas Connection
-// --- TEMPORARY CONNECTION TEST ---
-// We are hardcoding this just to prove the database works!
-const testURI = "mongodb+srv://nextgenadmin:NextGenPassword123@cluster0.888f8vh.mongodb.net/hospitalDB?appName=Cluster0";
-
-mongoose.connect(testURI)
-  .then(() => console.log("✅ MongoDB Connected Successfully (HARDCODED TEST)"))
+// --- SECURE CONNECTION ---
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected Successfully"))
   .catch(err => console.log("❌ MongoDB Connection Error:", err.message));
 // ---------------------------------
 // 3. Patient Schema (ADDED patientId HERE!)
