@@ -1,3 +1,4 @@
+import PatientChart from './PatientChart';
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -137,11 +138,16 @@ function App() {
       </div>
 
       <div style={mainContentStyle}>
-        {/* STATS SUMMARY */}
+      {/* STATS SUMMARY */}
         <div style={statsContainerStyle}>
           <div style={statBadgeStyle("#38bdf8")}>Total: {patients.length}</div>
           <div style={statBadgeStyle("#ef4444")}>🚨 Critical: {criticalPatients.length}</div>
           <div style={statBadgeStyle("#f59e0b")}>⚠️ Urgent: {urgentCount}</div>
+        </div>
+
+        {/* PIE CHART ADDED HERE! */}
+        <div style={{ marginBottom: "30px" }}>
+          <PatientChart patients={patients} />
         </div>
 
         {/* ADMISSION FORM */}
@@ -186,6 +192,7 @@ function App() {
           value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
           style={searchBarStyle}
         />
+      
         
         <h2 style={{ color: "#1e293b", marginBottom: "20px" }}>Patient Directory</h2>
         <div style={{ display: "grid", gap: "15px" }}>
@@ -217,6 +224,7 @@ function PatientCard({ p, onEdit, onDelete }) {
         </p>
         <p style={{ margin: 0, color: "#475569" }}><b>Disease:</b> <span style={{fontWeight: "bold"}}>{p.disease}</span> | 📞 {p.contact}</p>
       </div>
+        
       <div style={{ display: "flex", gap: "10px" }}>
         <button onClick={() => onEdit(p)} style={editButtonStyle}>Edit</button>
         <button onClick={() => onDelete(p._id)} style={dischargeButtonStyle}>Discharge</button>
